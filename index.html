@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#101827">
+<title>Perto de Você</title>
+<style>
+:root{color-scheme:dark;--bg:#0b1220;--panel:#121d30;--line:#26354c;--text:#edf4ff;--muted:#9aabc2;--accent:#62d6a5;--danger:#ff9c9c}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top,#182b43,var(--bg) 48%);font:16px/1.5 Inter,system-ui,sans-serif;color:var(--text);min-height:100vh}button,input{font:inherit}.wrap{width:min(100% - 32px,1040px);margin:auto;padding:44px 0}.brand{font-weight:800;letter-spacing:.04em;color:var(--accent)}.hero{max-width:680px;margin:9vh auto 40px;text-align:center}.hero h1{font-size:clamp(2rem,6vw,3.5rem);line-height:1.05;margin:14px 0}.hero p,.muted{color:var(--muted)}.panel{background:#121d30eF;border:1px solid var(--line);border-radius:22px;padding:26px;box-shadow:0 20px 70px #0005}.actions{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin:22px 0}.btn{border:0;border-radius:12px;padding:13px 18px;font-weight:700;cursor:pointer}.primary{background:var(--accent);color:#082018}.secondary{background:#24344b;color:var(--text);border:1px solid var(--line)}.field{display:block;text-align:left;margin:18px auto;max-width:440px}.field input{width:100%;padding:13px;border:1px solid var(--line);border-radius:10px;background:#0b1525;color:white;margin-top:6px}.consent{display:flex;gap:10px;text-align:left;align-items:flex-start;max-width:500px;margin:16px auto;color:var(--muted);font-size:.92rem}.consent input{margin-top:5px;accent-color:var(--accent)}.notice{padding:14px;border-radius:12px;background:#1a2a3e;color:var(--muted);font-size:.9rem;text-align:left}.hidden{display:none!important}.status{min-height:24px;color:var(--accent);margin-top:14px}.footer{text-align:center;color:var(--muted);font-size:.82rem;margin-top:26px}.admin{max-width:1000px;margin:30px auto}.admin-head{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:20px 0}.stat{background:#0c1728;border:1px solid var(--line);border-radius:14px;padding:16px}.stat strong{display:block;font-size:1.8rem}.table-wrap{overflow:auto}table{width:100%;border-collapse:collapse;font-size:.9rem}th,td{text-align:left;padding:12px;border-bottom:1px solid var(--line);white-space:nowrap}th{color:var(--muted)}a{color:var(--accent)}.login{max-width:420px;margin:12vh auto}.small{font-size:.82rem;color:var(--muted)}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <div class="brand">PERTO DE VOCÊ</div>
+  <section id="publicView" class="hero panel">
+    <p class="brand">DESCUBRA O QUE TEM POR PERTO</p>
+    <h1>Encontre lugares próximos de você.</h1>
+    <p>Se você permitir, usamos sua localização aproximada para apresentar estabelecimentos e serviços próximos. Você pode continuar sem compartilhar.</p>
+    <div class="notice">A localização só será solicitada depois que você tocar em “Permitir localização”. Não fazemos rastreamento contínuo. Seu número de WhatsApp é opcional e só será usado se você autorizar contato comercial.</div>
+    <label class="field">WhatsApp (opcional)
+      <input id="phone" type="tel" autocomplete="tel" placeholder="(65) 99999-9999" maxlength="20">
+    </label>
+    <label class="consent"><input id="marketing" type="checkbox"><span>Aceito receber contato comercial pelo WhatsApp sobre novidades e estabelecimentos. Sei que posso cancelar a qualquer momento.</span></label>
+    <label class="consent"><input id="analytics" type="checkbox"><span>Aceito cookies/armazenamento opcional para lembrar minhas preferências e medir interações neste site.</span></label>
+    <div class="actions"><button id="allow" class="btn primary">Permitir localização</button><button id="skip" class="btn secondary">Continuar sem localização</button></div>
+    <div id="status" class="status" role="status" aria-live="polite"></div>
+    <p class="small">Ao continuar, você confirma que leu esta explicação. Consulte a <a href="privacidade.html">Política de Privacidade</a>.</p>
+  </section>
+  <section id="thanks" class="hero panel hidden"><h1>Obrigado pela visita!</h1><p>Suas preferências foram registradas. Você pode fechar esta página.</p></section>
+  <section id="adminLogin" class="login panel hidden">
+    <h2>Acesso administrativo</h2><p class="muted">Entre com sua conta autorizada.</p>
+    <label class="field">E-mail<input id="email" type="email" autocomplete="username"></label>
+    <label class="field">Senha<input id="password" type="password" autocomplete="current-password"></label>
+    <button id="login" class="btn primary">Entrar</button><p id="loginStatus" class="status"></p>
+  </section>
+  <section id="dashboard" class="admin panel hidden">
+    <div class="admin-head"><div><div class="brand">PAINEL PRIVADO</div><h2>Visão geral</h2></div><div><button id="refresh" class="btn secondary">Atualizar</button> <button id="logout" class="btn secondary">Sair</button></div></div>
+    <p class="muted">Dados registrados com consentimento. Números de WhatsApp só aparecem quando a pessoa os informa e autoriza contato.</p>
+    <div class="stats"><div class="stat"><span class="muted">Visitas registradas</span><strong id="visits">—</strong></div><div class="stat"><span class="muted">Localização autorizada</span><strong id="located">—</strong></div><div class="stat"><span class="muted">Contatos autorizados</span><strong id="contacts">—</strong></div><div class="stat"><span class="muted">Interesses clicados</span><strong id="interests">—</strong></div></div>
+    <div class="actions" style="justify-content:flex-start"><button id="export" class="btn secondary">Exportar CSV</button></div>
+    <div class="table-wrap"><table><thead><tr><th>Data</th><th>Localização</th><th>WhatsApp</th><th>Contato autorizado</th><th>Campanha</th><th>Ação</th></tr></thead><tbody id="rows"><tr><td colspan="6">Configure o Supabase para carregar os registros.</td></tr></tbody></table></div>
+  </section>
+  <div class="footer">Perto de Você · Privacidade e transparência em primeiro lugar</div>
+</main>
+<script type="module">
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+const SUPABASE_URL = ''; // Configure nas variáveis abaixo ou substitua por suas credenciais públicas.
+const SUPABASE_ANON_KEY = '';
+const params = new URLSearchParams(location.search);
+const campaign = params.get('campanha') || params.get('utm_campaign') || 'direto';
+const $ = id => document.getElementById(id);
+const supabase = SUPABASE_URL && SUPABASE_ANON_KEY ? createClient(SUPABASE_URL,SUPABASE_ANON_KEY) : null;
+const uuid = () => crypto.randomUUID();
+const show = id => { ['publicView','thanks','adminLogin','dashboard'].forEach(x=>$(x).classList.add('hidden')); $(id).classList.remove('hidden'); };
+const cleanPhone = value => value.replace(/\D/g,'').slice(0,13);
+async function record(payload){ if(!supabase){ console.info('Supabase ainda não configurado; evento não foi enviado.',payload); return false; } const {error}=await supabase.from('visits').insert(payload); if(error) console.error(error); return !error; }
+async function finish(locationData=null){
+ const phone=cleanPhone($('phone').value);
+ const marketing=$('marketing').checked;
+ const analytics=$('analytics').checked;
+ if(marketing && (!phone || phone.length<10)){ $('status').textContent='Informe um WhatsApp válido para autorizar contato.'; return; }
+ const payload={visitor_id:uuid(),campaign,location_consent:!!locationData,latitude:locationData?.latitude??null,longitude:locationData?.longitude??null,phone:marketing?phone:null,marketing_consent:marketing,analytics_consent:analytics,user_agent:navigator.userAgent.slice(0,250)};
+ await record(payload);
+ $('status').textContent=''; show('thanks');
+}
+$('allow').addEventListener('click',()=>{
+ $('status').textContent='Aguardando autorização do navegador…';
+ if(!navigator.geolocation){ $('status').textContent='Seu navegador não oferece localização. Você pode continuar sem compartilhar.'; return; }
+ navigator.geolocation.getCurrentPosition(pos=>finish({latitude:pos.coords.latitude,longitude:pos.coords.longitude}),()=>{ $('status').textContent='Não foi possível obter a localização. Você pode continuar sem compartilhar.'; },{enableHighAccuracy:false,timeout:10000,maximumAge:300000});
+});
+$('skip').addEventListener('click',()=>finish());
+$('phone').addEventListener('input',e=>{const v=e.target.value.replace(/[^\d()+\s-]/g,'');e.target.value=v;});
+$('login').addEventListener('click',async()=>{
+ if(!supabase){$('loginStatus').textContent='Configure SUPABASE_URL e SUPABASE_ANON_KEY no arquivo index.html e crie o primeiro usuário no Supabase Auth.';return;}
+ const {error}=await supabase.auth.signInWithPassword({email:$('email').value,password:$('password').value});
+ if(error){$('loginStatus').textContent='Não foi possível entrar. Verifique suas credenciais.';return;} await loadDashboard();
+});
+async function loadDashboard(){
+ if(!supabase){show('adminLogin');$('loginStatus').textContent='O painel precisa ser conectado ao Supabase antes do primeiro acesso.';return;}
+ const {data:{session}}=await supabase.auth.getSession(); if(!session){show('adminLogin');return;}
+ show('dashboard');
+ const {data,error}=await supabase.from('visits').select('id,created_at,latitude,longitude,phone,marketing_consent,campaign').order('created_at',{ascending:false}).limit(500);
+ if(error){$('rows').innerHTML='<tr><td colspan="6">Erro ao carregar. Confira as políticas RLS do banco.</td></tr>';return;}
+ $('visits').textContent=data.length;$('located').textContent=data.filter(x=>x.latitude!==null).length;$('contacts').textContent=data.filter(x=>x.marketing_consent&&x.phone).length;$('interests').textContent='0';
+ $('rows').innerHTML=data.map(x=>{const date=new Date(x.created_at).toLocaleString('pt-BR');const loc=x.latitude===null?'Não compartilhada':x.latitude.toFixed(4)+', '+x.longitude.toFixed(4);const phone=x.phone||'—';const link=x.phone&&x.marketing_consent?'https://wa.me/'+x.phone.replace(/\D/g,''):'';return '<tr><td>'+date+'</td><td>'+loc+'</td><td>'+phone+'</td><td>'+(x.marketing_consent?'Sim':'Não')+'</td><td>'+x.campaign+'</td><td>'+(link?'<a target="_blank" rel="noopener" href="'+link+'">Abrir WhatsApp</a>':'—')+'</td></tr>';}).join('')||'<tr><td colspan="6">Nenhuma visita registrada.</td></tr>';
+ window.rowsData=data;
+}
+$('refresh').addEventListener('click',loadDashboard);
+$('logout').addEventListener('click',async()=>{await supabase?.auth.signOut();show('adminLogin');});
+$('export').addEventListener('click',()=>{const data=window.rowsData||[];const csv=[['data','latitude','longitude','whatsapp','contato_autorizado','campanha'],...data.map(x=>[x.created_at,x.latitude??'',x.longitude??'',x.phone??'',x.marketing_consent?'sim':'nao',x.campaign])].map(r=>r.map(v=>'"'+String(v??'').replaceAll('"','""')+'"').join(';')).join('\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'}));a.download='contatos-autorizados.csv';a.click();URL.revokeObjectURL(a.href);});
+if(location.pathname.endsWith('/admin')||params.get('admin')==='1')loadDashboard();
+</script>
+</body></html>
